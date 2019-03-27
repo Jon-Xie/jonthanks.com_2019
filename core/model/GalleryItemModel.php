@@ -1,15 +1,14 @@
 <?php
-class GalleryItem extends Model {
+class GalleryItemModel extends Model {
 	private $id;
 	private $name;
 	private $thumb;
 	private $original;
 	private $catagoryId;
 	private $favorite;
-
 	private $conn;
 
-	function __construct($id=null,$name,$thumb,$original,$catagoryId,$favorite) {
+	function __construct($id = null,$name = null,$thumb = null,$original = null,$catagoryId = null,$favorite = null) {
 		global $conn;
 		$this->conn = $conn;
 		$this->id = $id;
@@ -18,8 +17,6 @@ class GalleryItem extends Model {
 		$this->original = $original;
 		$this->catagoryId = $catagoryId;
 		$this->favorite = $favorite;
-
-
 	}
 
 	public function getId() {
@@ -70,9 +67,29 @@ class GalleryItem extends Model {
 		$this->favorite = $newFavorite;
 	}
 
-	public function getAll() {
+	public static function getAll() {
+		$output = array();
 		$sql = "SELECT * FROM `gallery`";
-		mysqli_query($this->conn, $sql);
+		$result = mysqli_query($this->conn, $sql); //Result set
+		if(mysqli_num_rows($result) > 0){ 
+			while($row = mysqli_fetch_object($result)){
+				$GalleryItemModel = new GalleryItemModel($row->id, $row->name, $row->thumb, $row->original, $row->categoryId, $row->favorite);
+				$output[] = $GalleryItemModel; //Append to the output array
+			}
+		}
+		return $output;
+	}
+
+	public static function getById($id){
+		$output = false;
+		$sql = "SELECT * FROM `gallery` WHERE `id` = $id";
+		$result = mysqli_query($this->conn, $sql);
+		if(mysqli_num_rows($result) > 0) {
+			$row = mysqli_fetch_object($result);
+			$GalleryItemModel = new GalleryItemModel($row->id, $row->name, $row->thumb, $row->original, $row->categoryId, $row->favorite);
+			$output = $GalleryItemModel;
+		}
+		return $output;
 	}
 
 	public function save() {
@@ -89,7 +106,5 @@ class GalleryItem extends Model {
 		$sql = "DELETE FROM `gallery` WHERE `id`= ".$this->id;
 		mysqli_query($this->conn,$sql);
 	}
-
-
 }
 ?>
