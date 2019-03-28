@@ -1,7 +1,7 @@
 <?php 
 
 class PageModel extends Model {
-	private $id;
+	private $tablename = 'pages';
 	private $title;
 	private $content;
 	private $slug;
@@ -12,7 +12,7 @@ class PageModel extends Model {
 	function __construct($id=null,$title,$content,$slug,$sidebar,$priority) {
 		global $conn;
 		$this->conn = $conn;
-		$this->id = $id;
+		parent::__construct($id);
 		$this->title;
 		$this->content;
 		$this->slug;
@@ -68,15 +68,31 @@ class PageModel extends Model {
 		$this->priority = $newPriority;
 	}
 
-	public function getAll() {
-
+	public static function getAll() {
+		$output = array();
+		$sql = "SELECT * FROM `".$this->tablename."`";
+		$result = mysqli_query($this->conn,$sql);
+		if(mysqli_num_rows($result) > 0) {
+			$row = mysqli_fetch_object($result) 
+			$object = new PageModel($row->id, $row->title, $row->content, $row->slug, $row->sidebar, $row->priority);
+			$output[] = $object; 
+		}
+		return $output;
 	}
 
 	public function save() {
-
+		if(parent::getId() == null) {
+			$sql = "INSERT INTO `".$this->tablename."` (`id`,`title`,`content`,`slug`,	`sidebar`,`priority`) VALUES (".$this->id.",'".$this->title."','".$this->content."','".$this->slug."','".$this->sidebar."',".$this->priority.")";
+			$result = mysqli_query($this->conn, $sql);
+		}
+		else {
+			$sql = "UPDATE `".$this->tablename."` SET `id`=".parent::getId().",`title` = '".$this->title."' , `content` = '".$this->content."', `slug` = '".$this->slug."' , `sidebar` = '".$this->sidebar."', `priority` = ".$this->priority." WHERE `id` = ".parent->getId().;
+			$result = mysqli_query($this->conn, $sql);
+		}
+	}
 
 	public function delete() {
-
+		$sql =  "DELETE FROM `".$this->tablename."` WHERE `id` = `".$this->id."`"
 	}
 }
 

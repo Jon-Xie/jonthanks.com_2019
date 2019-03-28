@@ -1,6 +1,6 @@
 <?php
 class GalleryItemModel extends Model {
-	private $id;
+	private $tableName = 'gallery';
 	private $name;
 	private $thumb;
 	private $original;
@@ -9,22 +9,14 @@ class GalleryItemModel extends Model {
 	private $conn;
 
 	function __construct($id = null,$name = null,$thumb = null,$original = null,$catagoryId = null,$favorite = null) {
+		parent::__construct($id);
 		global $conn;
 		$this->conn = $conn;
-		$this->id = $id;
 		$this->name = $name;
 		$this->thumb = $thumb;
 		$this->original = $original;
 		$this->catagoryId = $catagoryId;
 		$this->favorite = $favorite;
-	}
-
-	public function getId() {
-		return $this->id;
-	}
-
-	public function setId($newId) {
-		$this->id = $newId;
 	}
 
 	public function getName() {
@@ -69,7 +61,7 @@ class GalleryItemModel extends Model {
 
 	public static function getAll() {
 		$output = array();
-		$sql = "SELECT * FROM `gallery`";
+		$sql = "SELECT * FROM `".$this->tableName."`";
 		$result = mysqli_query($this->conn, $sql); //Result set
 		if(mysqli_num_rows($result) > 0){ 
 			while($row = mysqli_fetch_object($result)){
@@ -82,7 +74,7 @@ class GalleryItemModel extends Model {
 
 	public static function getById($id){
 		$output = false;
-		$sql = "SELECT * FROM `gallery` WHERE `id` = $id";
+		$sql = "SELECT * FROM `".$this->tableName."` WHERE `id` = $id";
 		$result = mysqli_query($this->conn, $sql);
 		if(mysqli_num_rows($result) > 0) {
 			$row = mysqli_fetch_object($result);
@@ -93,17 +85,17 @@ class GalleryItemModel extends Model {
 	}
 
 	public function save() {
-		if($this->id == null){
-			$sql = "INSERT INTO `gallery` (`id`,`name`,`thumb`,`original`,`categoryId`,`favorite`) VALUES (".$this->id.",'".$this->name."','".$this->thumb."','".$this->original."',".$this->categoryId.",".$this->favorite.")";
+		if(parent::getId() == null){
+			$sql = "INSERT INTO `".$this->tableName."` (`id`,`name`,`thumb`,`original`,`categoryId`,`favorite`) VALUES (".parent::getId().",'".$this->name."','".$this->thumb."','".$this->original."',".$this->categoryId.",".$this->favorite.")";
 			mysqli_query($this->conn,$sql);
 		}else{
-			$sql = "UPDATE `gallery` SET `id`= ".$this->id.", `name`='".$this->name."',`thumb`= '".$this->thumb."', `original` = '".$this->original."', `categoryId`= ".$this->categoryId.",`favorite` = ".$this->favorite. " WHERE `id` = ".$this->id;
+			$sql = "UPDATE `".$this->tableName."` SET `id`= ".parent::getId().", `name`='".$this->name."',`thumb`= '".$this->thumb."', `original` = '".$this->original."', `categoryId`= ".$this->categoryId.",`favorite` = ".$this->favorite. " WHERE `id` = ".parent::getId();
 			mysqli_query($this->conn,$sql);
 		}
 	}
 
 	public function delete() {
-		$sql = "DELETE FROM `gallery` WHERE `id`= ".$this->id;
+		$sql = "DELETE FROM `".$this->tableName."` WHERE `id`= ".parent::getId();
 		mysqli_query($this->conn,$sql);
 	}
 }
