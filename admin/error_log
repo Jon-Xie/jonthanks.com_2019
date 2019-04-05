@@ -1,0 +1,5 @@
+[29-Mar-2019 20:26:51 America/New_York] PHP Fatal error:  Class 'GalleryItemController' not found in /home/jontnsui/public_html/2019/admin/gallery.php on line 7
+[29-Mar-2019 20:29:14 America/New_York] PHP Warning:  require_once(../core/controller/GalleryItemController.php): failed to open stream: No such file or directory in /home/jontnsui/public_html/2019/includes/config.php on line 11
+[29-Mar-2019 20:29:14 America/New_York] PHP Fatal error:  require_once(): Failed opening required '../core/controller/GalleryItemController.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/jontnsui/public_html/2019/includes/config.php on line 11
+[29-Mar-2019 20:31:01 America/New_York] PHP Parse error:  syntax error, unexpected '$model' (T_VARIABLE), expecting function (T_FUNCTION) in /home/jontnsui/public_html/2019/core/controller/GalleryItemController.php on line 3
+[29-Mar-2019 20:31:04 America/New_York] PHP Parse error:  syntax error, unexpected '$model' (T_VARIABLE), expecting function (T_FUNCTION) in /home/jontnsui/public_html/2019/core/controller/GalleryItemController.php on line 3

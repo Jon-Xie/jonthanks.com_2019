@@ -68,7 +68,7 @@ class PageModel extends Model {
 		$this->priority = $newPriority;
 	}
 
-	public static function getAll() {
+	public function getAll() {
 		$output = array();
 		$sql = "SELECT * FROM `".$this->tablename."`";
 		$result = mysqli_query($this->conn,$sql);
@@ -78,6 +78,16 @@ class PageModel extends Model {
 			$output[] = $object; 
 		}
 		return $output;
+	}
+
+	public function getById() {
+		$sql = "SELECT * FROM `".$this->tablename."` WHERE `id` = '".$id."'";
+		$result = mysqli_query($this->conn, $sql);
+		if(mysqli_num_rows($result) > 0) {
+			$row = mysqli_fetch_object($result);
+			$object = new PageModel($row->id, $row->title, $row->content, $row->slug, $row->sidebar, $row->priority);
+		}
+		return $object;
 	}
 
 	public function save() {
@@ -95,6 +105,3 @@ class PageModel extends Model {
 		$sql =  "DELETE FROM `".$this->tablename."` WHERE `id` = `".$this->id."`"
 	}
 }
-
-
-	

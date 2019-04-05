@@ -1,0 +1,16 @@
+[28-Mar-2019 19:26:27 America/New_York] PHP Parse error:  syntax error, unexpected '}' in /home/jontnsui/public_html/2019/index.php on line 8
+[28-Mar-2019 19:29:11 America/New_York] PHP Warning:  require_once(core/model/GalleryItem.php): failed to open stream: No such file or directory in /home/jontnsui/public_html/2019/index.php on line 5
+[28-Mar-2019 19:29:11 America/New_York] PHP Fatal error:  require_once(): Failed opening required 'core/model/GalleryItem.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/jontnsui/public_html/2019/index.php on line 5
+[28-Mar-2019 19:29:11 America/New_York] PHP Warning:  require_once(core/model/GalleryItem.php): failed to open stream: No such file or directory in /home/jontnsui/public_html/2019/index.php on line 5
+[28-Mar-2019 19:29:11 America/New_York] PHP Fatal error:  require_once(): Failed opening required 'core/model/GalleryItem.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/jontnsui/public_html/2019/index.php on line 5
+[28-Mar-2019 19:33:13 America/New_York] PHP Parse error:  syntax error, unexpected '}' in /home/jontnsui/public_html/2019/core/model/GalleryItemModel.php on line 52
+[28-Mar-2019 19:39:03 America/New_York] PHP Fatal error:  Using $this when not in object context in /home/jontnsui/public_html/2019/core/model/GalleryItemModel.php on line 64
+[28-Mar-2019 19:42:36 America/New_York] PHP Strict Standards:  Non-static method GalleryItemModel::getAll() should not be called statically in /home/jontnsui/public_html/2019/index.php on line 6
+[28-Mar-2019 19:42:36 America/New_York] PHP Fatal error:  Using $this when not in object context in /home/jontnsui/public_html/2019/core/model/GalleryItemModel.php on line 64
+[28-Mar-2019 19:43:29 America/New_York] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/jontnsui/public_html/2019/index.php on line 7
+[28-Mar-2019 19:43:49 America/New_York] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/jontnsui/public_html/2019/index.php on line 7
+[28-Mar-2019 19:44:15 America/New_York] PHP Notice:  Array to string conversion in /home/jontnsui/public_html/2019/index.php on line 7
+[29-Mar-2019 20:20:02 America/New_York] PHP Warning:  require_once(core/model/GalleryItemController.php): failed to open stream: No such file or directory in /home/jontnsui/public_html/2019/index.php on line 5
+[29-Mar-2019 20:20:02 America/New_York] PHP Fatal error:  require_once(): Failed opening required 'core/model/GalleryItemController.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/jontnsui/public_html/2019/index.php on line 5
+[01-Apr-2019 19:22:37 America/New_York] PHP Warning:  require_once(../core/model/Model.php): failed to open stream: No such file or directory in /home/jontnsui/public_html/2019/includes/config.php on line 9
+[01-Apr-2019 19:22:37 America/New_York] PHP Fatal error:  require_once(): Failed opening required '../core/model/Model.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/jontnsui/public_html/2019/includes/config.php on line 9
