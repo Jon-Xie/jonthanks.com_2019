@@ -13,6 +13,5 @@
 		public function setId($newId) {
 			$this->id = $newId;
 		}
-
 	}
 ?>

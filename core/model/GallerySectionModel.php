@@ -46,7 +46,7 @@ class GallerySectionModel extends Model {
 
 	public function save() {
 		if(parent::getId() == null){
-			$sql = "INSERT INTO `".$this->tableName."` (`id`,`title`) VALUES (".parent::getId().",'".$this->title.")";
+			$sql = "INSERT INTO `".$this->tableName."` (`title`) VALUES ('".$this->title.")";
 			mysqli_query($this->conn,$sql);
 		}else{
 			$sql = "UPDATE `".$this->tableName."` SET `id`= ".parent::getId().", `name`='".$this->title." WHERE `id` = ".parent::getId();

@@ -1,6 +1,6 @@
 <?php 
 class AdminModel extends Model {
-	private $tableName = "admin";
+	private static $tableName = "admin";
 	private $id;
 	private $username;
 	private $password;
@@ -8,7 +8,6 @@ class AdminModel extends Model {
 
 	function __construct($id = null, $username = null, $password = null) {
 		global $conn;
-
 		$this->conn = $conn;
 		parent::__construct($id);
 		$this->username = $username;
@@ -41,19 +40,16 @@ class AdminModel extends Model {
 
 	public function save() {
 		if($this->id == null) {
-			$sql = "INSERT INTO `".$this->tableName."` (`id`,`username`,`password`) VALUES (".$this->id.",".$this->username.",".$this->password.")";
-			$result = mysqli_query()
-			///////// save function 
+			$sql = "INSERT INTO `".self::$tableName."` (`username`,`password`) VALUES (".$this->username.",".$this->password.")";
+			$result = mysqli_query($this->conn, $sql);
+		} else {
+			$sql = "UPDATE `".self::$tableName."` SET `id` = ".parent::getId().",`username` = ".$this->username.", `password` = ".$this->password" WHERE `id` = ".parent::getId();
+			$result = mysqli_query($this->conn, $sql);
 		}
 	}
 
 	public function delete() {
-
+		$sql = "DELETE FROM `".self::$tableName."` WHERE `id` = ".parent::getId();
+		$result = mysqli_query($this->conn, $sql);
 	}
 }
-
-
-	
-id
-username
-password

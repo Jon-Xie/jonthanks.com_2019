@@ -21,14 +21,70 @@ class JournalEntryModel extends Model {
 	}
 
 	public function getTitle() {
+		return $this->title;
+	}
 
+	public function setTitle($newTitle) {
+		$this->title = $newTitle;
 	}
 
 	public function getExcerpt() {
-		
+		return $this->excerpt;
 	}
 
+	public function setExcerpt($newExcerpt) {
+		$this->excerpt = $newExcerpt;
+	}
+
+	public function getBody() {
+		return $this->body;
+ 	}
+
+	public function setBody($newBody) {
+		$this->body = $newBody;
+	}
+
+	public function getThumbnail() {
+		return $this->thumbnail;
+	}
+
+	public function setThumbnail($newThumbnail) {
+		$this->thumbnail = $newThumbnail;
+	}
+
+	public function getImage() {
+		return $this->image;
+	}
+
+	public function setImage($newImage) {
+		$this->image = $newImage;
+	}
+
+	public function getDate() {
+		return $this->date;
+	}
+
+	public function setDate($newDate) {
+		$this->date = $newDate;
+	}
+
+	public function getAll() {
+
+	}
+
+	public function getById($id) {
+
+	}
 	
+	public function save() {
+
+	}
+
+	public function delete() {
+
+	}
+
+
 id
 title
 excerpt

@@ -92,11 +92,11 @@ class PageModel extends Model {
 
 	public function save() {
 		if(parent::getId() == null) {
-			$sql = "INSERT INTO `".$this->tablename."` (`id`,`title`,`content`,`slug`,	`sidebar`,`priority`) VALUES (".$this->id.",'".$this->title."','".$this->content."','".$this->slug."','".$this->sidebar."',".$this->priority.")";
+			$sql = "INSERT INTO `".$this->tablename."` (`title`,`content`,`slug`,	`sidebar`,`priority`) VALUES ('".$this->title."','".$this->content."','".$this->slug."','".$this->sidebar."',".$this->priority.")";
 			$result = mysqli_query($this->conn, $sql);
 		}
 		else {
-			$sql = "UPDATE `".$this->tablename."` SET `id`=".parent::getId().",`title` = '".$this->title."' , `content` = '".$this->content."', `slug` = '".$this->slug."' , `sidebar` = '".$this->sidebar."', `priority` = ".$this->priority." WHERE `id` = ".parent->getId().;
+			$sql = "UPDATE `".$this->tablename."` SET `id`=".parent::getId().",`title` = '".$this->title."' , `content` = '".$this->content."', `slug` = '".$this->slug."' , `sidebar` = '".$this->sidebar."', `priority` = ".$this->priority." WHERE `id` = ".parent->getId();
 			$result = mysqli_query($this->conn, $sql);
 		}
 	}
