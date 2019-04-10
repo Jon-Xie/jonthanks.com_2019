@@ -6,8 +6,12 @@
 @import "base/typography";
 @import "base/utilities";
 
-@import "components/journalentry";
+@import "components/journal-entry";
 @import "components/project";
+@import "components/lightbox";
+@import "components/gallery";
+@import "components/video";
 
-@import "layout/navigation";
-@import "layout/maincontainer";
+@import "layout/main-navigation";
+@import "layout/sub-navigation";
+@import "layout/main-container";
