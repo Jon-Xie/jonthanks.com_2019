@@ -19,3 +19,5 @@ function initGalleryBackend() {
 	req.open('GET',endpoint+'?action=galleryitems&subaction=getall');
 	req.send();
 }
+
+jonAJax
