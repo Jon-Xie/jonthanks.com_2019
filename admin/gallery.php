@@ -27,6 +27,8 @@
 				$image->save();
 			}
 		}
+		$output = array('success'=> true,'message'=>'this transaction was successful');
+		echo json_encode($output);
 		exit();
 	}
 	
@@ -43,10 +45,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col">
-				<h1>GALLERY</h1>
-				<?php 
-					if(empty($action)){
-				?>		
+				<div class="card view-gallery-list">
+					<div class="card-header">Gallery List</div>
+					<div class="card-body">
 						<a href="dashboard.php" class="btn btn-danger">Back</a>
 						<a href="gallery.php?act=add" class="btn btn-dark">Add</a>
 						<table class="table">
@@ -61,32 +62,12 @@
 									<td>Delete</td>
 								</tr>
 							</thead>
-							<tbody  id="sortable" >
-							<?php 
-								$items = GalleryItemModel::getAll();
-								if(count($items)>0){
-									foreach ($items as $item) {
-										$item = $item->getAsArray();
-										echo '<tr class="draggable" id="row-'.$item['id'].'">';
-										echo '<td>';
-										echo '<input type="hidden" class="orderNumber" name="orderNumber[]" value="'.$item['orderNumber'].'">';
-										echo '<input type="hidden" class="imageId" name="imageId[]" value="'.$item['id'].'">';
-										echo $item['id'];
-										echo '</td>';
-										echo '<td><img class="gallery-admin-thumb" src="../images/gallery/thumbnails/'.$item['thumb'].'"></td>';
-										echo '<td>'.$item['name'].'</td>';
-										echo '<td>'.$item['category_name'].'</td>';
-										echo '<td>'.(($item['favorite'])?'Yes':'No').'</td>';
-										echo '<td><a href="gallery.php?act=edit&id='.$item['id'].'" class="btn btn-dark">Edit</a></td>';
-										echo '<td><a href="gallery.php?act=delete&id='.$item['id'].'" class="btn btn-dark">Delete</a></td>';
-										echo '</tr>';
-									}
-								}
-							?>
+							<tbody id="sortable" class="gallery-list">
 							</tbody>
 						</table>
+					</div>
 				<?php 
-					}else if($action=='add'){
+					if($action=='add'){
 				?>
 					<h2>Add</h2>
 					<form method="POST" enctype="multipart/form-data">
@@ -196,6 +177,12 @@
 	
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="../assets/js/gallery.js"></script>
+	<script>
+		//$(document).ready(function(){
+			initGalleryBackend();
+		//})
+	</script>
 	<script>
 		$(document).ready(function(){
 			let biggestSide = 0;
@@ -268,7 +255,7 @@
 		      	 		'sortData' : sortData
 		      	 	}
 		      	 }).done(function(response){
-
+		      	 	var responseArray = JSON.parse(response);
 		      	 })
 		      }
 		    });
@@ -276,5 +263,10 @@
 		});
 		
 	</script>
+	<form >
+		<input type="text" name="frstname">
+		<input type="text" name="lastname">
+	</form>
+
 </body>
 </html>

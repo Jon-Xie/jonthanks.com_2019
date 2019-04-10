@@ -1,6 +1,7 @@
 <?php 
 
 class JournalEntryModel extends Model {
+	private static $tablename = 'journal';
 	private $title;
 	private $excerpt;
 	private $body;
@@ -69,19 +70,38 @@ class JournalEntryModel extends Model {
 	}
 
 	public function getAll() {
-
+		$output = array();
+		$sql = "SELECT * FROM `".self::$tablename."`";
+		$result = = mysqli_query($this->conn, $sql);
+		if(mysqli_num_rows($result) > 0) {
+			while($row = myslqi_fetch_object($result)) {
+				$object = new JournalEntryModel($row->id, $row->title, $row->excerpt, $row->body, $row->thumbnail, $row->image, $row->date);
+				$output[] = $object; 
+			}
+		}
+		return $object;
 	}
 
 	public function getById($id) {
+		$output = true;
+		$sql = "SELECT * FROM `".self::$tablename."` WHERE `id` = $id";
+		$result = mysqli_query($this->conn, $sql);
+		if(mysqli_num_rows($result) > 0) {
+			$row = mysqli_fetch_object($result);
+			$object = new JournalEntryModel($row->id, $row->title, $row->excerpt, $row->body, $row->thumbnail, $row->image, $row->date);
+		}
+		return $object;
 
 	}
 	
 	public function save() {
-
-	}
-
-	public function delete() {
-
+		if($this->id == null) {
+			$sql = "INSERT INTO `".self::$tablename."` (`title`,`excerpt`,`body`, `thumbanil`, `image`, `date`) VALUES (".$this->title.",".$this->excerpt.",".$this->body.",".$this->thumbnail.",".$this->image.",".$this->date.")";
+			$result = mysqli_query($this->conn, $sql);
+		} else {
+			$sql = "UPDATE `".self::$tablename."` SET `id` = ".parent::getId().",`username` = ".$this->title.", `excerpt` = ".$this->excerpt", `body` = ".$this->body", `thumbnail` = ".$this->thumbnail", `image` = ".$this->image", `date` = ".$this->date" WHERE `id` = ".parent::getId();
+			$result = mysqli_query($this->conn, $sql);
+		}
 	}
 
 
