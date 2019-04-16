@@ -24,6 +24,13 @@ function loadList(){
 	var url = endpoint + '?action=galleryitems&subaction=getall';
 	ajax(url,'GET',populateList);
 }
+
+function loadListByCategory() {
+	var url = endpoint + '?action=galleryitems&subaction=getByCategoryId';
+	ajax(url, 'GET',populateList);
+}
+
+
 function populateList(){
 	var res = this.responseText;
 	if(res !== undefined) {
@@ -34,10 +41,14 @@ function populateList(){
 			document.getElementById('gallery-list').innerHTML += '<tr><td>'+item.id+'</td><td>'+item.thumb+'</td><td>'+item.name+'</td><td>'+item.categoryId+'</td><td>'+item.favorite  +'</td><td>Edit</td><td>Delete</td></tr>';
 			console.log(res.items[i]);
 		}
-
 	}
 }
 
+function editObject();
+	
+
+function deleteObject();
+	
 loadList();
 
 

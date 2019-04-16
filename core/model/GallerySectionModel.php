@@ -9,7 +9,7 @@ class GallerySectionModel extends Model {
 		global $conn;
 		$this->conn = $conn;
 		$this->title = $title;
-	}
+	
 
 	public function getTitle() {
 		return $this->title;
@@ -33,7 +33,16 @@ class GallerySectionModel extends Model {
 	}
 
 	public static function getAllAsArray(){
-
+		$output = array();
+		$items = self::getAll();
+		if(count($items) > 0) {
+			foreach($items as $item) {
+				$output[] = array(
+					'title' => $item->getTitle();
+				)
+			}
+		}
+		return $output;
 	}
 
 	public static function getById($id){
@@ -48,11 +57,16 @@ class GallerySectionModel extends Model {
 		return $output;
 	}
 
-	public static function getByIdAsArray(){
-		
+	public static function getByIdAsArray($id){
+		$output = array();
+		$item = self::getById($id);
+		if(count($item) > 0) {
+			$output = array(
+				'title' => $item->getTitle();
+			)
+		}
+		return $output;
 	}
-
-
 
 	public function save() {
 		if(parent::getId() == null){

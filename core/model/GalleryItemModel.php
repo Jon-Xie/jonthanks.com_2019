@@ -104,15 +104,16 @@ class GalleryItemModel extends Model {
 		return $output;
 	}
 
-	public static function getById($categoryId){
+	public static function getById($id){
 		global $conn;
 		$output = false;
 		$sql = "SELECT * FROM `".self::$tableName."` WHERE `categoryId` = $categoryId";
 		$result = mysqli_query($conn, $sql);
 		if(mysqli_num_rows($result) > 0) {
-			$row = mysqli_fetch_object($result);
+			while($row = mysqli_fetch_object($result)){
 			$GalleryItemModel = new GalleryItemModel($row->id, $row->name, $row->thumb, $row->original, $row->categoryId, $row->favorite, $row->orderNumber);
 			$output = $GalleryItemModel;
+			}
 		} 
 		return $output;
 	}
@@ -135,7 +136,7 @@ class GalleryItemModel extends Model {
 		return $output;
 	}
 
-	public static function getByCategoryId($id){
+	public static function getByCategoryId($categoryId){
 		global $conn;
 		$output = false;
 		$sql = "SELECT * FROM `".self::$tableName."` WHERE `id` = $id";
@@ -147,6 +148,28 @@ class GalleryItemModel extends Model {
 		} 
 		return $output;
 	}
+
+	public static function getByCategoryIdAsArray($){
+		$items = self::getByCategoryId($categoryId);
+		$output = array();
+		if(count($items)>0){
+			foreach ($items as $item) {
+				//associated array
+				$output[] = array(
+					'id' => $item->getId(), 
+					'name' => $item->getName(), 
+					'thumb' => $item->getThumb(), 
+					'original' => $item->getOriginal(), 
+					'categoryId' => $item->getCategoryId(),
+					'favorite' => $item->getFavorite(),
+					'orderNumber' => $item->getOrderNumber(),
+				);
+			}
+		}
+		return $output;
+	}
+
+
 
 
 	public function save() {
