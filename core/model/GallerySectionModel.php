@@ -32,6 +32,10 @@ class GallerySectionModel extends Model {
 		return $output;
 	}
 
+	public static function getAllAsArray(){
+
+	}
+
 	public static function getById($id){
 		$output = false;
 		$sql = "SELECT * FROM `".$this->tableName."` WHERE `id` = $id";
@@ -43,6 +47,12 @@ class GallerySectionModel extends Model {
 		}
 		return $output;
 	}
+
+	public static function getByIdAsArray(){
+		
+	}
+
+
 
 	public function save() {
 		if(parent::getId() == null){

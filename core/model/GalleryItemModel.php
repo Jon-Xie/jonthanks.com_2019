@@ -104,10 +104,10 @@ class GalleryItemModel extends Model {
 		return $output;
 	}
 
-	public static function getById($id){
+	public static function getById($categoryId){
 		global $conn;
 		$output = false;
-		$sql = "SELECT * FROM `".self::$tableName."` WHERE `id` = $id";
+		$sql = "SELECT * FROM `".self::$tableName."` WHERE `categoryId` = $categoryId";
 		$result = mysqli_query($conn, $sql);
 		if(mysqli_num_rows($result) > 0) {
 			$row = mysqli_fetch_object($result);
@@ -132,6 +132,19 @@ class GalleryItemModel extends Model {
 				'orderNumber' => $item->getOrderNumber(),
 			);
 		}
+		return $output;
+	}
+
+	public static function getByCategoryId($id){
+		global $conn;
+		$output = false;
+		$sql = "SELECT * FROM `".self::$tableName."` WHERE `id` = $id";
+		$result = mysqli_query($conn, $sql);
+		if(mysqli_num_rows($result) > 0) {
+			$row = mysqli_fetch_object($result);
+			$GalleryItemModel = new GalleryItemModel($row->id, $row->name, $row->thumb, $row->original, $row->categoryId, $row->favorite, $row->orderNumber);
+			$output = $GalleryItemModel;
+		} 
 		return $output;
 	}
 

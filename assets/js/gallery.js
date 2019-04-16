@@ -9,15 +9,35 @@ function initGalleryBackend() {
 	// 		response = JSON.parse(repsonse);
 	// 		$().
 	// 	}
+
 	// });
 
-	function reqLoad(){
-		console.log(this.responseText);
-	}
+}
+function ajax(url, method ,callback) {
 	var req = new XMLHttpRequest();
-	req.addEventListener("load",reqLoad);
-	req.open('GET',endpoint+'?action=galleryitems&subaction=getall');
+	req.addEventListener("load", callback);
+	req.open(method, url);
 	req.send();
 }
 
-jonAJax
+function loadList(){
+	var url = endpoint + '?action=galleryitems&subaction=getall';
+	ajax(url,'GET',populateList);
+}
+function populateList(){
+	var res = this.responseText;
+	if(res !== undefined) {
+		res = JSON.parse(res);
+		var items = res.items;
+		for(var i = 0; i <items.length; i++) {
+			var item = items[i];
+			document.getElementById('gallery-list').innerHTML += '<tr><td>'+item.id+'</td><td>'+item.thumb+'</td><td>'+item.name+'</td><td>'+item.categoryId+'</td><td>'+item.favorite  +'</td><td>Edit</td><td>Delete</td></tr>';
+			console.log(res.items[i]);
+		}
+
+	}
+}
+
+loadList();
+
+

@@ -62,7 +62,7 @@
 									<td>Delete</td>
 								</tr>
 							</thead>
-							<tbody id="sortable" class="gallery-list">
+							<tbody id="gallery-list">
 							</tbody>
 						</table>
 					</div>

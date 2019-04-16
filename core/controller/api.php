@@ -30,6 +30,10 @@ if(!empty($_POST['id'])) {
 	$id = $_POST['id'];
 }
 
+if(!empty($_GET['categoryId'])) {
+	$categoryId = $_GET['categoryId'];
+}
+
 if($action == 'galleryitems'){
 	if($subaction == 'getall'){
 		$items = GalleryItemModel::getAllAsArray();
@@ -59,6 +63,21 @@ if($action == 'galleryitems'){
 				'message' => 'There was no image by provided ID',
 			);
 		}
+	}else if ($subaction == 'getByCategoryId'){
+		$item = GalleryItemModel::getByCategoryIdAsArray($categoryId);
+		if($item !== false) {
+			$output = array(
+				'success' => true,
+				'message' => '',
+				'item' => $item
+			);
+		} else {
+			$output = array(
+				'success' => false,
+				'message' => 'There was no image by provided ID'
+			)
+		}
+
 	}else if($subaction == 'add'){
 		$errors = array();
 		if(!empty($_POST['name'])){
