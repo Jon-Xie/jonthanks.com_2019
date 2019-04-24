@@ -231,12 +231,12 @@
 				}
 			});
 
-		    $( "#sortable" ).sortable({
+		    $( "#gallery-list" ).sortable({
 		      revert: true,
 		      update: function( event, ui ) {
 		      	var i =0;
 		      	var sortData = [];
-		      	 $( "#sortable tr" ).each(function(){
+		      	 $( "#gallery-list tr" ).each(function(){
 		      	 	console.log(i);
 		      	 	$(this).find('.orderNumber').val(i);
 		      	 	sortData.push({

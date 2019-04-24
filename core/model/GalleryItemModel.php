@@ -168,6 +168,7 @@ class GalleryItemModel extends Model {
 		}
 		return $output;
 	}
+	
 
 
 

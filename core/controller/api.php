@@ -75,7 +75,7 @@ if($action == 'galleryitems'){
 			$output = array(
 				'success' => false,
 				'message' => 'There was no image by provided ID'
-			)
+			);
 		}
 
 	}else if($subaction == 'add'){
@@ -168,6 +168,100 @@ if($action == 'galleryitems'){
 		}
 		if(count($errors)==0){
 			$galleryItem->delete();
+			$output = array(
+				'success' => true,
+				'message' => '',
+			);
+		}else{
+			$output = array(
+				'success' => false,
+				'message' => $errors,
+			);
+		}
+		
+	}
+}else if($action=='gallerysections'){
+	if($subaction == 'getall'){
+		$items = GallerySectionModel::getAllAsArray();
+		if(count($items)>0){
+			$output = array(
+				'success' => true,
+				'message' => '',
+				'items' => $items
+			);
+		}else{
+			$output = array(
+				'success' => false,
+				'message' => 'There was no gallery section in the database',
+			);
+		}
+	}else if($subaction == 'getbyid'){
+		$item = GallerySectionModel::getByIdAsArray($id);
+		if($item !== false){
+			$output = array(
+				'success' => true,
+				'message' => '',
+				'item' => $item
+			);
+		}else{
+			$output = array(
+				'success' => false,
+				'message' => 'There was no gallery section by provided ID',
+			);
+		}
+	}else if($subaction == 'add'){
+		$errors = array();
+		if(!empty($_POST['title'])){
+			$title = $_POST['title'];
+		}else{
+			$errors[] = 'Please provide the title for this gallery section';
+		}
+		if(count($errors)==0){
+			$GallerySectionModel = new GallerySectionModel(null,$title);
+			$GallerySectionModel->save();
+			$output = array(
+				'success' => true,
+				'message' => '',
+			);
+		}else{
+			$output = array(
+				'success' => false,
+				'message' => $errors,
+			);
+		}
+
+	}else if($subaction == 'edit'){
+		$gallerySection = GallerySectionModel::getById($id);
+		$errors = array();
+		if($gallerySection === false){
+			$errors[] = 'There is no gallery section with the provided id';
+		}
+		if(!empty($_POST['title'])){
+			$title = $_POST['title'];
+		}else{
+			$errors[] = 'Please provide the title for this gallery section';
+		}
+		if(count($errors)==0){
+			$gallerySection->setTitle($title);
+			$gallerySection->save();
+			$output = array(
+				'success' => true,
+				'message' => '',
+			);
+		}else{
+			$output = array(
+				'success' => false,
+				'message' => $errors,
+			);
+		}
+	}else if($subaction == 'delete'){
+		$gallerySection = GallerySectionModel::getById($id);
+		$errors = array();
+		if($gallerySection === false){
+			$errors[] = 'There is no gallery section with the provided id';
+		}
+		if(count($errors)==0){
+			$gallerySection->delete();
 			$output = array(
 				'success' => true,
 				'message' => '',
