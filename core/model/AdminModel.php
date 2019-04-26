@@ -1,7 +1,7 @@
 <?php 
 class AdminModel extends Model {
 	private static $tableName = "admin";
-	private $id;
+
 	private $username;
 	private $password;
 	private $conn;
@@ -13,6 +13,24 @@ class AdminModel extends Model {
 		$this->username = $username;
 		$this->password = $password;
 	}
+
+	public function getUsername() {
+		return $this->username;
+	}
+
+	public function setUsername($username) {
+		$this->username = $username;
+	}
+
+	public function getPassword() {
+		return $this->password;
+	}
+
+	public function setPassword($password) {
+		$this->password = $password;
+	}
+
+
 
 	public function getAll() {
 		$output = array();
@@ -43,7 +61,7 @@ class AdminModel extends Model {
 			$sql = "INSERT INTO `".self::$tableName."` (`username`,`password`) VALUES (".$this->username.",".$this->password.")";
 			$result = mysqli_query($this->conn, $sql);
 		} else {
-			$sql = "UPDATE `".self::$tableName."` SET `id` = ".parent::getId().",`username` = ".$this->username.", `password` = ".$this->password" WHERE `id` = ".parent::getId();
+			$sql = "UPDATE `".self::$tableName."` SET `id` = ".parent::getId().",`username` = ".$this->username.", `password` = ".$this->password." WHERE `id` = ".parent::getId();
 			$result = mysqli_query($this->conn, $sql);
 		}
 	}

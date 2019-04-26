@@ -3,3 +3,4 @@
 [29-Mar-2019 20:29:14 America/New_York] PHP Fatal error:  require_once(): Failed opening required '../core/controller/GalleryItemController.php' (include_path='.:/opt/alt/php56/usr/share/pear:/opt/alt/php56/usr/share/php') in /home/jontnsui/public_html/2019/includes/config.php on line 11
 [29-Mar-2019 20:31:01 America/New_York] PHP Parse error:  syntax error, unexpected '$model' (T_VARIABLE), expecting function (T_FUNCTION) in /home/jontnsui/public_html/2019/core/controller/GalleryItemController.php on line 3
 [29-Mar-2019 20:31:04 America/New_York] PHP Parse error:  syntax error, unexpected '$model' (T_VARIABLE), expecting function (T_FUNCTION) in /home/jontnsui/public_html/2019/core/controller/GalleryItemController.php on line 3
+[26-Apr-2019 19:23:05 America/New_York] PHP Fatal error:  Class 'AdminModel' not found in /home/jontnsui/public_html/2019/core/controller/AdminController.php on line 6

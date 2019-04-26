@@ -7,20 +7,22 @@ class AdminController extends Controller{
 	}
 
 	public function Authenticate(){
+		$output = null;
 		// check if post is not empty
 		if(count($_POST) > 0) {
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			$hashPwd = sha1($password);
 			$result = $this->AdminModel->getUserByUsernameAndPassword($username, $hashPwd);
-			if($output !== false) {
-				
+			if($result !== false) {
+				$_SESSION['loggedIn'] = true;
+				$_SESSION['userId'] = $result->getId();
+				header('location: dashboard.php');
+				exit();
+			} else {
+				$output = 'Failed to log in';
 			}
 		}
-		// get fields from the post
-
-		// call getUserByUsernameAndPassword in model and based on the result
-		// open new login session and redirect
-		// or return error message
+		return $output;
 	}
 }
