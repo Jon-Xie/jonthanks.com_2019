@@ -9,6 +9,10 @@ $conn = mysqli_connect($db_host,$db_user,$db_pass,$db_name);
 define('BASEPATH',dirname(__FILE__).'/../'); //defining global constants 
 define('BASEURL','http://jonthanks.com/2019/');
 
+
+require_once(BASEPATH.'core/controller/Controller.php');
+require_once(BASEPATH.'core/controller/AdminController.php');
+
 require_once(BASEPATH.'core/model/Model.php');
 require_once(BASEPATH.'core/model/GalleryItemModel.php');
 require_once(BASEPATH.'core/controller/GalleryItemController.php');

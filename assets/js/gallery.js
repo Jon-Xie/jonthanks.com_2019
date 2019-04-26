@@ -75,21 +75,21 @@ function replaceCatIdWithCatName(catId){
 	
 
 // function deleteObject();
-getCategories(); 
+// getCategories(); 
 
-$('.cats').html('hi');
-targetClass('cats','color','red');
+// $('.cats').html('hi');
+// targetClass('cats','color','red');
 
-function targetByClass(className,func,value) {
-	var items = document.getElementsByClassName(className);
-	for(j=0; j<items.length; j++){
-		if(func=='sethtml'){
-			items[j].innerHTML = value;
-		}else if(func == 'settext'){
-			items[j].innerText = value;
-		}else if(func == 'color'){
-			items[j].style.color = value;
-		}
-	}
-}
+// function targetByClass(className,func,value) {
+// 	var items = document.getElementsByClassName(className);
+// 	for(j=0; j<items.length; j++){
+// 		if(func=='sethtml'){
+// 			items[j].innerHTML = value;
+// 		}else if(func == 'settext'){
+// 			items[j].innerText = value;
+// 		}else if(func == 'color'){
+// 			items[j].style.color = value;
+// 		}
+// 	}
+// }
 

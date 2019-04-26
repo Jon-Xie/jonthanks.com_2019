@@ -52,4 +52,15 @@ class AdminModel extends Model {
 		$sql = "DELETE FROM `".self::$tableName."` WHERE `id` = ".parent::getId();
 		$result = mysqli_query($this->conn, $sql);
 	}
+
+	public function getUserByUsernameAndPassword($username,$password){
+		$output = false;
+		$sql = "SELECT * FROM `admin` WHERE `username` = '$username' AND `password` = '$password'";
+		$result = mysqli_query($this->conn, $sql);
+		if(mysqli_num_rows($result) === 1) {
+			$row = mysqli_fetch_object($result); 
+			$output = new AdminModel($row->id, $row->username, $row->password);
+		} 
+		return $output;
+	}
 }

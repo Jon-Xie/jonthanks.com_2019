@@ -1,0 +1,10 @@
+PHP API
+
+Font End Fully Ajax
+Back End Fully Ajax
+
+/admin/news.php HARD REDIRECT
+
+/admin/news.html 
+1 request 
+location.href = ...
