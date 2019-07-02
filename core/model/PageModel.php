@@ -68,7 +68,7 @@ class PageModel extends Model {
 		$this->priority = $newPriority;
 	}
 
-	public static function getAll() {
+	public function getAll() {
 		$output = array();
 		$sql = "SELECT * FROM `".$this->tablename."`";
 		$result = mysqli_query($this->conn,$sql);
@@ -80,21 +80,22 @@ class PageModel extends Model {
 		return $output;
 	}
 
-	public static function getAllAsArray() {
+	public function getAllAsArray() {
 
 	}
 
-	public static function getById() {
+	public function getById($id) {
+		$output = false;
 		$sql = "SELECT * FROM `".$this->tablename."` WHERE `id` = '".$id."'";
 		$result = mysqli_query($this->conn, $sql);
 		if(mysqli_num_rows($result) > 0) {
 			$row = mysqli_fetch_object($result);
-			$object = new PageModel($row->id, $row->title, $row->content, $row->slug, $row->sidebar, $row->priority);
+			$output = new PageModel($row->id, $row->title, $row->content, $row->slug, $row->sidebar, $row->priority);
 		}
-		return $object;
+		return $output;
 	}
 
-	public static function getByIdAsArray($id) {
+	public function getByIdAsArray($id) {
 		
 	}
 

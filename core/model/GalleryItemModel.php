@@ -70,10 +70,19 @@ class GalleryItemModel extends Model {
 	}
 
 
-	public static function getAll() {
+	public static function getAll($args = array()) {
 		global $conn;
 		$output = array();
 		$sql = "SELECT * FROM `".self::$tableName."`";
+		if(!empty($args['keywords'])){
+			$sql .= " WHERE `original` LIKE '%".$args['keywords']."%'";
+		}
+		if(!empty($args['orderBy'])){
+			$sql .= " ORDER BY `".$args['orderBy']."`";
+		}
+		if(!empty($args['orderDirection'])){
+			$sql .= " ".$args['orderDirection'];
+		}
 		$result = mysqli_query($conn, $sql); //Result set
 		if(mysqli_num_rows($result) > 0){ 
 			while($row = mysqli_fetch_object($result)){
@@ -84,30 +93,11 @@ class GalleryItemModel extends Model {
 		return $output;
 	}
 
-	public static function getAllAsArray(){
-		$items = self::getAll();
-		$output = array();
-		if(count($items)>0){
-			foreach ($items as $item) {
-				//associated array
-				$output[] = array(
-					'id' => $item->getId(), 
-					'name' => $item->getName(), 
-					'thumb' => $item->getThumb(), 
-					'original' => $item->getOriginal(), 
-					'categoryId' => $item->getCategoryId(),
-					'favorite' => $item->getFavorite(),
-					'orderNumber' => $item->getOrderNumber(),
-				);
-			}
-		}
-		return $output;
-	}
 
 	public static function getById($id){
 		global $conn;
 		$output = false;
-		$sql = "SELECT * FROM `".self::$tableName."` WHERE `categoryId` = $categoryId";
+		$sql = "SELECT * FROM `".self::$tableName."` WHERE `id` = $id";
 		$result = mysqli_query($conn, $sql);
 		if(mysqli_num_rows($result) > 0) {
 			while($row = mysqli_fetch_object($result)){
@@ -119,27 +109,11 @@ class GalleryItemModel extends Model {
 	}
 
 
-	public static function getByIdAsArray($id){
-		$item = self::getById($id);
-		$output = false;
-		if($item != false){
-			$output = array(
-				'id' => $item->getId(), 
-				'name' => $item->getName(), 
-				'thumb' => $item->getThumb(), 
-				'original' => $item->getOriginal(), 
-				'categoryId' => $item->getCategoryId(),
-				'favorite' => $item->getFavorite(),
-				'orderNumber' => $item->getOrderNumber(),
-			);
-		}
-		return $output;
-	}
 
 	public static function getByCategoryId($categoryId){
 		global $conn;
 		$output = false;
-		$sql = "SELECT * FROM `".self::$tableName."` WHERE `id` = $id";
+		$sql = "SELECT * FROM `".self::$tableName."` WHERE `categoryId` = $categoryId";
 		$result = mysqli_query($conn, $sql);
 		if(mysqli_num_rows($result) > 0) {
 			$row = mysqli_fetch_object($result);
@@ -149,26 +123,6 @@ class GalleryItemModel extends Model {
 		return $output;
 	}
 
-	public static function getByCategoryIdAsArray($){
-		$items = self::getByCategoryId($categoryId);
-		$output = array();
-		if(count($items)>0){
-			foreach ($items as $item) {
-				//associated array
-				$output[] = array(
-					'id' => $item->getId(), 
-					'name' => $item->getName(), 
-					'thumb' => $item->getThumb(), 
-					'original' => $item->getOriginal(), 
-					'categoryId' => $item->getCategoryId(),
-					'favorite' => $item->getFavorite(),
-					'orderNumber' => $item->getOrderNumber(),
-				);
-			}
-		}
-		return $output;
-	}
-	
 
 
 
@@ -178,7 +132,11 @@ class GalleryItemModel extends Model {
 			$sql = "INSERT INTO `".self::$tableName."` (`name`,`thumb`,`original`,`categoryId`,`favorite`,`orderNumber`) VALUES ('".$this->name."','".$this->thumb."','".$this->original."',".$this->categoryId.",".$this->favorite.",".$this->orderNumber.")";
 			mysqli_query($this->conn,$sql);
 		}else{
-			$sql = "UPDATE `".self::$tableName."` SET `id`= ".parent::getId().", `name`='".$this->name."',`thumb`= '".$this->thumb."', `original` = '".$this->original."', `categoryId`= ".$this->categoryId.",`favorite` = ".$this->favorite. ",`orderNumber` = ".$this->orderNumber. " WHERE `id` = ".parent::getId();
+			if($this->thumb == null || $this->original == null){ //User is not updating the image file
+				$sql = "UPDATE `".self::$tableName."` SET `id`= ".parent::getId().", `name`='".$this->name."', `categoryId`= ".$this->categoryId.",`favorite` = ".$this->favorite. ",`orderNumber` = ".$this->orderNumber. " WHERE `id` = ".parent::getId();		
+			}else{	
+				$sql = "UPDATE `".self::$tableName."` SET `id`= ".parent::getId().", `name`='".$this->name."',`thumb`= '".$this->thumb."', `original` = '".$this->original."', `categoryId`= ".$this->categoryId.",`favorite` = ".$this->favorite. ",`orderNumber` = ".$this->orderNumber. " WHERE `id` = ".parent::getId();
+			}
 			mysqli_query($this->conn,$sql);
 		}
 	}

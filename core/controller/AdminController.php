@@ -25,4 +25,11 @@ class AdminController extends Controller{
 		}
 		return $output;
 	}
+
+	public static function IsAuthorized() {
+		if(empty($_SESSION['loggedIn'])){
+			header('location: index.php');
+			exit();
+		}
+	}
 }

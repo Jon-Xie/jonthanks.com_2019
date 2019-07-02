@@ -1,36 +1,18 @@
 <?php 
 	require_once("../includes/config.php");
-	// if(empty($_SESSION['loggedin'])){
-	// 	header('location: index.php');
-	// 	exit();
-	// }
-	$GalleryItemController = new GalleryItemController();
-	$GalleryItemController->processForm();
-
-	$action = '';
-	if(!empty($_GET['act'])){ //$_GET pulls from query string
-		$action = $_GET['act'];
-	}
-
-	if(!empty($_GET['id'])){
-		$id = $_GET['id'];
-	}
-
-	//Update Sort
-	if(!empty($_POST['isAjax'])){
-		$action = $_POST['action'];
-		$sortData = $_POST['sortData'];
-		if(count($sortData)>0){
-			foreach ($sortData as $item) {
-				$image = GalleryItemModel::getById($item['id']);
-				$image->setOrderNumber($item['orderNumber']);
-				$image->save();
-			}
-		}
-		$output = array('success'=> true,'message'=>'this transaction was successful');
-		echo json_encode($output);
+	if(empty($_SESSION['loggedin'])){
+		header('location: index.php');
 		exit();
 	}
+
+	$GalleryItemController = new GalleryItemController();
+	$action = $GalleryItemController->getAction();
+	$id = $GalleryItemController->getId();
+	$GalleryItemController->processForm($action,$id);
+
+	
+
+	
 	
 
 ?>
@@ -50,6 +32,12 @@
 					<div class="card-body">
 						<a href="dashboard.php" class="btn btn-danger">Back</a>
 						<a href="gallery.php?act=add" class="btn btn-dark">Add</a>
+						<a href="#" class="btn btn-dark save-order-button" disabled="disabled">Save Order</a>
+						<form method="POST">
+							<input type="hidden" name="form-name" value="search">
+							<input type="text" name="keywords" placeholder="Keywords" value="<?=(!empty($_POST['keywords']))? $_POST['keywords'] : '' ?>">
+							<input type="submit" class="btn btn-success" value="Search">
+						</form>
 						<table class="table">
 							<thead>
 								<tr>
@@ -63,6 +51,33 @@
 								</tr>
 							</thead>
 							<tbody id="gallery-list">
+								<?php 
+									$args = array( 
+										'orderBy' => 'id',
+										'orderDirection' => 'DESC'
+									);
+									if(!empty($_POST) && !empty($_POST['keywords'])){
+										$args['keywords'] = $_POST['keywords'];
+									}
+									$images = GalleryItemModel::getAll($args);
+									foreach($images as $image) {
+								?>
+										<tr>
+											<td>
+												<?= $image->getId() ?>
+												<input type="hidden" name="imageId" class="imageId" value="<?= $image->getId() ?>">	
+												<input type="hidden" name="orderNumber" class="orderNumber" value="<?= $image->getOrderNumber() ?>">	
+											</td>
+											<td><?= $image->getThumb() ?></td>
+											<td><?= $image->getName() ?></td>
+											<td><?= GallerySectionModel::getById($image->getCategoryId())->getTitle() ?></td>
+											<td><?= $image->getFavorite() ?></td>
+											<td><a href="gallery.php?action=edit&id=<?= $image->getId()?>">edit</a></td>
+											<td><a href="gallery.php?action=delete&id=<?= $image->getId()?>">delete</a></td>
+										</tr>
+								<?php
+									}
+								?>
 							</tbody>
 						</table>
 					</div>
@@ -72,6 +87,7 @@
 					<h2>Add</h2>
 					<form method="POST" enctype="multipart/form-data">
 						<input type="hidden" name="form-name" value="add">
+						<input type="hidden" name="orderNumber" value="0">
 						<label>Name</label><br>
 						<input  class="form-control" type="text" name="name"><br>
 						<label>Image</label><br>
@@ -79,11 +95,10 @@
 						<label>Category</label><br>
 						<select name="categoryId" class="form-control">
 							<?php 
-								$sql="SELECT * FROM `gallerysections`";
-								$res=mysqli_query($conn, $sql);
-								while($row = mysqli_fetch_object($res)) {
-									echo('<option value="'.$row->id.'">'.$row->title.'</option>');
-								}
+								$sections = GallerySectionModel::getAll();
+								foreach($sections as $section) {
+									echo('<option value="'.$section->getId().'">'.$section->getTitle().'</option>');
+								}	
 							?>
 						</select><br>
 						<label>Favorite</label><br>
@@ -101,6 +116,7 @@
 					<h2>Edit</h2>
 					<form method="POST" enctype="multipart/form-data">
 						<input type="hidden" name="form-name" value="edit">
+						<input type="hidden" name="orderNumber" value="<?=$theImage['orderNumber'] ?>">
 						<label>Name</label><br>
 						<input  class="form-control" type="text" name="name" value="<?=$theImage['name'] ?>"><br>
 						<label>Image</label>
@@ -177,13 +193,14 @@
 	
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="../assets/js/gallery.js"></script>
+	<!-- <script src="../assets/js/gallery.js"></script> -->
 	<script>
 		//$(document).ready(function(){
 			initGalleryBackend();
 		//})
 	</script>
 	<script>
+      	var sortData = [];
 		$(document).ready(function(){
 			let biggestSide = 0;
 
@@ -234,8 +251,9 @@
 		    $( "#gallery-list" ).sortable({
 		      revert: true,
 		      update: function( event, ui ) {
+		      	$('.save-order-button').attr('disabled',false); //enable the order button
+		      	sortData = [];
 		      	var i =0;
-		      	var sortData = [];
 		      	 $( "#gallery-list tr" ).each(function(){
 		      	 	console.log(i);
 		      	 	$(this).find('.orderNumber').val(i);
@@ -246,7 +264,13 @@
 		      	 	i++;
 		      	 })
 		      	 console.log(sortData);
-		      	 //Send Ajax request to update data
+		      	
+		      }
+		    });
+		    $( "tbody, tr" ).disableSelection();
+		    $(".save-order-button").click(function(e){
+		    	e.preventDefault();
+		    	 //Send Ajax request to update data
 		      	 $.ajax({
 		      	 	method: 'POST',
 		      	 	data: {
@@ -256,17 +280,12 @@
 		      	 	}
 		      	 }).done(function(response){
 		      	 	var responseArray = JSON.parse(response);
+		      	 	console.log(responseArray);
 		      	 })
-		      }
-		    });
-		    $( "tbody, tr" ).disableSelection();
+		    })
 		});
 		
 	</script>
-	<form >
-		<input type="text" name="frstname">
-		<input type="text" name="lastname">
-	</form>
 
 </body>
 </html>
